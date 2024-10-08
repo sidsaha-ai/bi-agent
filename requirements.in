@@ -14,3 +14,4 @@ tqdm
 tokenizers
 transformers
 langchain
+openai

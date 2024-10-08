@@ -50,9 +50,8 @@ def main(prompt):
         pad_token_id=tokenizer.pad_token_id,
         max_length=len(prompt) + 50,
     )
-
-    # skip input
-
+    tokens = tokens[0, inputs['input_ids'].shape[-1]:]  # skip the input part
+    
     text = tokenizer.batch_decode(tokens)[0]
     print(text)
 
