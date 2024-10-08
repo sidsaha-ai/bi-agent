@@ -1,11 +1,10 @@
 """
 This agent adds numbers.
 """
-from transformers import AutoTokenizer, AutoModelForCausalLM
-from langchain.agents import initialize_agent, AgentType
-
+from langchain.agents import AgentType, initialize_agent
 from llms.gpt import GptLlm
 from tools.add_numbers import add_tool
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
 
 class AddNumbersAgent:

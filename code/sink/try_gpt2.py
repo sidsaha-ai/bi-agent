@@ -1,5 +1,7 @@
 import argparse
+
 from openai import OpenAI
+
 
 def main(prompt):
     model_id = 'llama-3.2-3b-instruct'

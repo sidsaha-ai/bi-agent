@@ -5,6 +5,7 @@ import argparse
 
 from agents.add_numbers import AddNumbersAgent
 
+
 def main(input):
     print(input)
     agent = AddNumbersAgent()
