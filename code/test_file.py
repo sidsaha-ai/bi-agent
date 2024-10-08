@@ -2,6 +2,7 @@
 This is a test file.
 """
 
+
 def main():
     """
     The main method for execution.
