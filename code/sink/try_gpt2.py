@@ -1,25 +1,17 @@
-from transformers import AutoTokenizer, AutoModelForCausalLM
-
 import argparse
-import torch
+from openai import OpenAI
 
 def main(prompt):
-    model_name = 'meta-llama/Meta-Llama-3-8B-Instruct'
-
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForCausalLM.from_pretrained(
-        model_name, torch_dtype=torch.float16,
-    )
-
-    if tokenizer.pad_token_id is None:
-        tokenizer.pad_token_id = tokenizer.eos_token_id
+    model_id = 'llama-3.2-3b-instruct'
+    base_url = 'http://localhost:1234/v1'
+    client = OpenAI(base_url=base_url, api_key='lm_studio')
 
     prompt = f'''
     Extract the numbers from the question. Just provide the numbers or say None. Below are a few examples -
 
     # Example 1
     Question: Tell me the sum of 10, 12, and 14.
-    AI: 10, 12, 14.
+    AI: 10, 12, 14
     
     # Example 2
     Question: Can you get me the sum of 1 and 5.
@@ -29,31 +21,22 @@ def main(prompt):
     Question: My name is Siddharth.
     AI: None
 
+    # Example 4
+    Question: What is the sum of Sid.
+    AI: None
+
     Below is the question you have to work on -
     Question: {prompt}
     '''
     print(prompt)
 
-    device = 'mps' if torch.backends.mps.is_available() else 'cpu'
-    print(f'Device: {device}')
-
-    model = model.to(device)
-
-    inputs = tokenizer(
-        prompt, return_tensors='pt', padding=True, truncation=True,
-    ).to(device)
-    
-    tokens = model.generate(
-        inputs['input_ids'],
-        attention_mask=inputs['attention_mask'],
-        do_sample=True,
-        pad_token_id=tokenizer.pad_token_id,
-        max_length=len(prompt) + 50,
+    completion = client.chat.completions.create(
+        model=model_id,
+        messages=[
+            {'role': 'user', 'content': prompt},
+        ],
     )
-    tokens = tokens[0, inputs['input_ids'].shape[-1]:]  # skip the input part
-    
-    text = tokenizer.batch_decode(tokens)[0]
-    print(text)
+    print(f'Result: {completion.choices[0].message.content}')
 
 
 if __name__ == '__main__':
