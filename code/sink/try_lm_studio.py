@@ -1,9 +1,15 @@
+"""
+Script to try LM Studio.
+"""
 import argparse
 
 from openai import OpenAI
 
 
 def main(prompt):
+    """
+    The main function to test for different prompts.
+    """
     model_id = 'llama-3.2-3b-instruct'
     base_url = 'http://localhost:1234/v1'
     client = OpenAI(base_url=base_url, api_key='lm_studio')

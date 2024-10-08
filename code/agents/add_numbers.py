@@ -8,12 +8,15 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 
 class AddNumbersAgent:
+    """
+    The agent to add numbers.
+    """
 
     def __init__(self) -> None:
         super().__init__()
 
         self.model_name: str = 'gpt2'
-        
+
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
         self.model = AutoModelForCausalLM.from_pretrained(self.model_name)
 
@@ -22,7 +25,7 @@ class AddNumbersAgent:
         self.agent = initialize_agent(
             tools=[add_tool], agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION, llm=self.llm,
         )
-    
+
     def run(self, user_input):
         """
         Runs the agent.

@@ -22,7 +22,7 @@ class GptLlm(LLM):
         inputs = self.tokenizer(prompt, return_tensors='pt')
         with torch.no_grad():
             outputs = self.model.generate(**inputs, max_length=200)
-        
+
         return self.tokenizer.decode(outputs[0], skip_special_tokens=True)
 
     @property
@@ -33,7 +33,7 @@ class GptLlm(LLM):
         return {
             'model': 'GPT-2',
         }
-    
+
     @property
     def _llm_type(self) -> str:
         """
