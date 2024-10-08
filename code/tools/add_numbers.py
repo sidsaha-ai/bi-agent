@@ -14,6 +14,7 @@ def add_numbers(numbers: str) -> str:
     except Exception as e:
         return f'Exception: {e}'
 
+
 add_tool = Tool(
     name='AddTool', func=add_numbers, description='This tool adds numbers. Provide space-separated integers.',
 )

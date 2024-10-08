@@ -20,7 +20,7 @@ def main(prompt):
     # Example 1
     Question: Tell me the sum of 10, 12, and 14.
     AI: 10, 12, 14
-    
+
     # Example 2
     Question: Can you get me the sum of 1 and 5.
     AI: 1, 5

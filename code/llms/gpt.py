@@ -15,7 +15,7 @@ class GptLlm(LLM):
     model: SkipValidation[any]
     tokenizer: SkipValidation[any]
 
-    def _call(self, prompt: str, stop=None) -> str:
+    def _call(self, prompt: str, stop=None) -> str:  # pylint: disable=arguments-differ
         """
         Calls the GPT LLM.
         """
