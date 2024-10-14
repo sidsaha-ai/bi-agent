@@ -3,14 +3,32 @@ Script to try LM Studio.
 """
 import argparse
 
+import requests
 from openai import OpenAI
 
 
-def main(prompt):
+def fetch_model_id() -> str:
+    """
+    Fetches the model ID from LM Studio.
+    """
+    url = 'http://localhost:1234/v1/models'
+    r = requests.get(url, timeout=5)
+
+    if not r.ok:
+        return None
+
+    c = r.json()
+    data = c.get('data', [])
+    if not data:
+        return None
+
+    return data[0].get('id', None)
+
+
+def main(prompt, model_id):
     """
     The main function to test for different prompts.
     """
-    model_id = 'llama-3.2-3b-instruct'
     base_url = 'http://localhost:1234/v1'
     client = OpenAI(base_url=base_url, api_key='lm_studio')
 
@@ -55,4 +73,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    main(args.prompt)
+    model = fetch_model_id()
+    print(f'Fetched Model ID: {model}')
+
+    main(args.prompt, model)
