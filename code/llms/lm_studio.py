@@ -1,9 +1,8 @@
 """
 Contains the abstract class for an LLM in the LM Studio.
 """
-from openai import OpenAI
-
 from langchain_core.language_models.llms import LLM
+from openai import OpenAI
 
 
 class LMStudioLLM(LLM):
