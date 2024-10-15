@@ -44,7 +44,7 @@ def main():
     )
 
     llm_chain = LLMChain(prompt=prompt_template, llm=llm)
-    
+
     user_query = 'I need to sum the numbers 10, 12, and 14.'
     numbers = llm_chain.run({'user_question': user_query})
     print(f'==== NUMBERS: {numbers}')
@@ -52,7 +52,7 @@ def main():
     add_tool = Tool(
         name='AddTool', func=add_numbers, description='Sums a list of numbers provided as a comma-separated string.',
     )
-    
+
     tools = [add_tool]
     agent = initialize_agent(
         tools=tools, agent='zero-shot-react-description', verbose=True,

@@ -29,7 +29,7 @@ class AddNumbersAgent:
         """
         prompt = self._generate_prompt(user_input)
         return self.agent.invoke(prompt, handle_parsing_errors=True)
-    
+
     def _generate_prompt(self, user_input: str) -> str:
         """
         Generates and returns the prompt.

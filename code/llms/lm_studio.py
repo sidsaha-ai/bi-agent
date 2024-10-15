@@ -29,11 +29,11 @@ class LMStudioLLM(LLM):
             return None
         if completion.choices is None or len(completion.choices) == 0:
             return None
-        
+
         choice = completion.choices[0]
         if choice.message is None or choice.message.content is None:
             return None
-        
+
         return choice.message.content
 
     @property
@@ -44,7 +44,7 @@ class LMStudioLLM(LLM):
         return {
             'model_id': self.model_id,
         }
-    
+
     @property
     def _llm_type(self) -> str:
         """
