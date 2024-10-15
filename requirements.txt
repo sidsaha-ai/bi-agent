@@ -107,7 +107,10 @@ langchain==0.3.2
 langchain-core==0.3.9
     # via
     #   langchain
+    #   langchain-openai
     #   langchain-text-splitters
+langchain-openai==0.2.2
+    # via -r requirements.in
 langchain-text-splitters==0.3.0
     # via langchain
 langsmith==0.1.132
@@ -143,7 +146,9 @@ numpy==1.26.4
     #   scipy
     #   transformers
 openai==1.51.1
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   langchain-openai
 orjson==3.10.7
     # via langsmith
 packaging==24.1
@@ -212,13 +217,16 @@ pyyaml==6.0.2
     #   langchain-core
     #   transformers
 regex==2024.9.11
-    # via transformers
+    # via
+    #   tiktoken
+    #   transformers
 requests==2.32.3
     # via
     #   huggingface-hub
     #   langchain
     #   langsmith
     #   requests-toolbelt
+    #   tiktoken
     #   transformers
 requests-toolbelt==1.0.0
     # via langsmith
@@ -249,6 +257,8 @@ tenacity==8.5.0
     #   langchain-core
 threadpoolctl==3.5.0
     # via scikit-learn
+tiktoken==0.8.0
+    # via langchain-openai
 tokenizers==0.20.0
     # via
     #   -r requirements.in
