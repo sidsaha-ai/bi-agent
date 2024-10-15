@@ -1,7 +1,7 @@
 from langchain import LLMChain, PromptTemplate
-from langchain.agents import initialize_agent, Tool
-from llms.lm_studio import LMStudioLLM
+from langchain.agents import Tool, initialize_agent
 from langchain.chains import LLMChain
+from llms.lm_studio import LMStudioLLM
 
 
 def add_numbers(numbers_str: str) -> int:
