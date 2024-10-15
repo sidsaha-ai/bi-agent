@@ -5,6 +5,7 @@ This script runs through the simple LLM tutorial in langchain docs.
 import os
 
 from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import ChatOpenAI
 
 os.environ['LANGCHAIN_TRACING_V2'] = "true"
@@ -21,14 +22,16 @@ def main():
     model = ChatOpenAI(
         temperature=0.0, base_url=base_url, api_key=api_key,
     )
+    parser = StrOutputParser()
+    chain = model | parser
 
     messages = [
         SystemMessage(content='Translate the following from English to Italian.'),
         HumanMessage(content='Hi!'),
     ]
-    output = model.invoke(messages)
-    content = output.content
-    print(content)
+
+    result = chain.invoke(messages)
+    print(result)
 
 
 if __name__ == '__main__':
