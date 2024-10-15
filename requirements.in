@@ -17,3 +17,4 @@ langchain
 openai
 langchain-openai
 langserve[all]
+langchain_community
