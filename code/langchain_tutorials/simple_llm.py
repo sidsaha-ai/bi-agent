@@ -2,10 +2,10 @@
 This script runs through the simple LLM tutorial in langchain docs.
 """
 
-from langchain_openai import ChatOpenAI
 import os
-from langchain_core.messages import HumanMessage, SystemMessage
 
+from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_openai import ChatOpenAI
 
 os.environ['LANGCHAIN_TRACING_V2'] = "true"
 os.environ['LANGCHAIN_API_KEY'] = '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'
