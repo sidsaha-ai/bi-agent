@@ -1,10 +1,16 @@
-from langchain import LLMChain, PromptTemplate
+"""
+This script tries out a simple langchain.
+"""
 from langchain.agents import Tool, initialize_agent
-from langchain.chains import LLMChain
+from langchain.chains.llm import LLMChain
+from langchain.prompts import PromptTemplate
 from llms.lm_studio import LMStudioLLM
 
 
 def add_numbers(numbers_str: str) -> int:
+    """
+    The tool function to add the numbers passed.
+    """
     try:
         numbers = [int(num.strip()) for num in numbers_str.split(',')]
         return sum(numbers)
@@ -13,6 +19,9 @@ def add_numbers(numbers_str: str) -> int:
 
 
 def main():
+    """
+    The main method to start execution.
+    """
     model_id: str = 'llama-3.2-3b-instruct-4bit'
     lm_url: str = 'http://localhost:1234/v1'
     llm = LMStudioLLM(lm_url=lm_url, model_id=model_id)
@@ -55,13 +64,14 @@ def main():
 
     tools = [add_tool]
     agent = initialize_agent(
-        tools=tools, agent='zero-shot-react-description', verbose=True,
+        tools=tools, agent='zero-shot-react-description', verbose=True, llm=llm,
     )
 
     user_query = 'I need to sum the numbers 10, 12, and 14.'
 
     response = agent.run(numbers)
     print(response)
+
 
 if __name__ == '__main__':
     main()

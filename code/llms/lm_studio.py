@@ -13,7 +13,7 @@ class LMStudioLLM(LLM):
     lm_url: str
     model_id: str
 
-    def _call(self, prompt: str, **kwargs) -> str:
+    def _call(self, prompt: str, **kwargs) -> str:  # pylint: disable=arguments-differ
         """
         Calls the LLM.
         """
