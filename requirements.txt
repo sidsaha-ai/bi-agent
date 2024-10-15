@@ -16,6 +16,8 @@ anyio==4.6.0
     # via
     #   httpx
     #   openai
+    #   sse-starlette
+    #   starlette
 astroid==3.3.5
     # via pylint
 asttokens==2.4.1
@@ -32,7 +34,9 @@ certifi==2024.8.30
 charset-normalizer==3.3.2
     # via requests
 click==8.1.7
-    # via pip-tools
+    # via
+    #   pip-tools
+    #   uvicorn
 contourpy==1.3.0
     # via matplotlib
 cycler==0.12.1
@@ -45,6 +49,10 @@ distro==1.9.0
     # via openai
 executing==2.1.0
     # via stack-data
+fastapi==0.115.2
+    # via
+    #   langserve
+    #   sse-starlette
 filelock==3.16.1
     # via
     #   huggingface-hub
@@ -63,11 +71,14 @@ fsspec==2024.9.0
     #   huggingface-hub
     #   torch
 h11==0.14.0
-    # via httpcore
+    # via
+    #   httpcore
+    #   uvicorn
 httpcore==1.0.6
     # via httpx
 httpx==0.27.2
     # via
+    #   langserve
     #   langsmith
     #   openai
 huggingface-hub==0.25.1
@@ -109,10 +120,13 @@ langchain-core==0.3.9
     #   langchain
     #   langchain-openai
     #   langchain-text-splitters
+    #   langserve
 langchain-openai==0.2.2
     # via -r requirements.in
 langchain-text-splitters==0.3.0
     # via langchain
+langserve[all]==0.3.0
+    # via -r requirements.in
 langsmith==0.1.132
     # via
     #   langchain
@@ -150,7 +164,9 @@ openai==1.51.1
     #   -r requirements.in
     #   langchain-openai
 orjson==3.10.7
-    # via langsmith
+    # via
+    #   langserve
+    #   langsmith
 packaging==24.1
     # via
     #   build
@@ -184,8 +200,10 @@ pycodestyle==2.12.1
 pydantic==2.9.2
     # via
     #   -r requirements.in
+    #   fastapi
     #   langchain
     #   langchain-core
+    #   langserve
     #   langsmith
     #   openai
 pydantic-core==2.23.4
@@ -247,8 +265,14 @@ sniffio==1.3.1
     #   openai
 sqlalchemy==2.0.35
     # via langchain
+sse-starlette==1.8.2
+    # via langserve
 stack-data==0.6.3
     # via ipython
+starlette==0.39.2
+    # via
+    #   fastapi
+    #   sse-starlette
 sympy==1.13.3
     # via torch
 tenacity==8.5.0
@@ -281,6 +305,7 @@ transformers==4.45.2
     # via -r requirements.in
 typing-extensions==4.12.2
     # via
+    #   fastapi
     #   huggingface-hub
     #   langchain-core
     #   openai
@@ -292,6 +317,8 @@ tzdata==2024.2
     # via pandas
 urllib3==2.2.3
     # via requests
+uvicorn==0.31.1
+    # via sse-starlette
 wcwidth==0.2.13
     # via prompt-toolkit
 wheel==0.44.0

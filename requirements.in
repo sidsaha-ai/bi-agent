@@ -16,3 +16,4 @@ transformers
 langchain
 openai
 langchain-openai
+langserve[all]
