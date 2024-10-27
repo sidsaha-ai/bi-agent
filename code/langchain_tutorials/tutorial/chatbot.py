@@ -2,13 +2,16 @@
 This script implements a chatbot by following the Langchain tutorial.
 """
 
-from langchain_core.messages import AIMessage, HumanMessage
+from langchain_core.messages import HumanMessage
 from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import START, MessagesState, StateGraph
 
 
 class ChatApp:
+    """
+    A simple chatbot application using a language model.
+    """
     model: ChatOpenAI
     workflow: StateGraph
     memory: MemorySaver
@@ -35,14 +38,14 @@ class ChatApp:
         self._init_model()
         # make memory
         self.memory = MemorySaver()
-        
+
         # define the workflow
         self.workflow = StateGraph(state_schema=MessagesState)
         self.workflow.add_edge(START, 'model')
         self.workflow.add_node('model', self.call_model)
 
         self.app = self.workflow.compile(checkpointer=self.memory)
-    
+
     def run(self) -> None:
         """
         This runs the chatbot.
@@ -53,13 +56,13 @@ class ChatApp:
         while True:
             user_message: str = input('Your message: ')
             user_message = user_message.strip()
-            
+
             if user_message.lower() == 'stop':
                 break
 
             input_messages = [HumanMessage(user_message)]
             output = self.app.invoke(
-                {'messages': input_messages}, config,
+                {'messages': input_messages}, config
             )
             print(f'AI Response: {output["messages"][-1].content}')
 
