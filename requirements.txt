@@ -7,13 +7,19 @@
 aiohappyeyeballs==2.4.3
     # via aiohttp
 aiohttp==3.10.9
-    # via langchain
+    # via
+    #   langchain
+    #   langchain-community
 aiosignal==1.3.1
     # via aiohttp
 annotated-types==0.7.0
     # via pydantic
 anyio==4.6.0
-    # via httpx
+    # via
+    #   httpx
+    #   openai
+    #   sse-starlette
+    #   starlette
 astroid==3.3.5
     # via pylint
 asttokens==2.4.1
@@ -30,17 +36,27 @@ certifi==2024.8.30
 charset-normalizer==3.3.2
     # via requests
 click==8.1.7
-    # via pip-tools
+    # via
+    #   pip-tools
+    #   uvicorn
 contourpy==1.3.0
     # via matplotlib
 cycler==0.12.1
     # via matplotlib
+dataclasses-json==0.6.7
+    # via langchain-community
 decorator==5.1.1
     # via ipython
 dill==0.3.9
     # via pylint
+distro==1.9.0
+    # via openai
 executing==2.1.0
     # via stack-data
+fastapi==0.115.2
+    # via
+    #   langserve
+    #   sse-starlette
 filelock==3.16.1
     # via
     #   huggingface-hub
@@ -59,11 +75,16 @@ fsspec==2024.9.0
     #   huggingface-hub
     #   torch
 h11==0.14.0
-    # via httpcore
+    # via
+    #   httpcore
+    #   uvicorn
 httpcore==1.0.6
     # via httpx
 httpx==0.27.2
-    # via langsmith
+    # via
+    #   langserve
+    #   langsmith
+    #   openai
 huggingface-hub==0.25.1
     # via
     #   tokenizers
@@ -86,6 +107,8 @@ jedi==0.19.1
     # via ipython
 jinja2==3.1.4
     # via torch
+jiter==0.6.1
+    # via openai
 joblib==1.4.2
     # via scikit-learn
 jsonpatch==1.33
@@ -95,19 +118,33 @@ jsonpointer==3.0.0
 kiwisolver==1.4.7
     # via matplotlib
 langchain==0.3.2
+    # via
+    #   -r requirements.in
+    #   langchain-community
+langchain-community==0.3.1
     # via -r requirements.in
 langchain-core==0.3.9
     # via
     #   langchain
+    #   langchain-community
+    #   langchain-openai
     #   langchain-text-splitters
+    #   langserve
+langchain-openai==0.2.2
+    # via -r requirements.in
 langchain-text-splitters==0.3.0
     # via langchain
+langserve[all]==0.3.0
+    # via -r requirements.in
 langsmith==0.1.132
     # via
     #   langchain
+    #   langchain-community
     #   langchain-core
 markupsafe==3.0.0
     # via jinja2
+marshmallow==3.22.0
+    # via dataclasses-json
 matplotlib==3.9.2
     # via -r requirements.in
 matplotlib-inline==0.1.7
@@ -122,6 +159,8 @@ multidict==6.1.0
     # via
     #   aiohttp
     #   yarl
+mypy-extensions==1.0.0
+    # via typing-inspect
 networkx==3.3
     # via torch
 numpy==1.26.4
@@ -129,18 +168,26 @@ numpy==1.26.4
     #   -r requirements.in
     #   contourpy
     #   langchain
+    #   langchain-community
     #   matplotlib
     #   pandas
     #   scikit-learn
     #   scipy
     #   transformers
+openai==1.51.1
+    # via
+    #   -r requirements.in
+    #   langchain-openai
 orjson==3.10.7
-    # via langsmith
+    # via
+    #   langserve
+    #   langsmith
 packaging==24.1
     # via
     #   build
     #   huggingface-hub
     #   langchain-core
+    #   marshmallow
     #   matplotlib
     #   pytest
     #   transformers
@@ -169,11 +216,17 @@ pycodestyle==2.12.1
 pydantic==2.9.2
     # via
     #   -r requirements.in
+    #   fastapi
     #   langchain
     #   langchain-core
+    #   langserve
     #   langsmith
+    #   openai
+    #   pydantic-settings
 pydantic-core==2.23.4
     # via pydantic
+pydantic-settings==2.5.2
+    # via langchain-community
 pyflakes==3.2.0
     # via flake8
 pygments==2.18.0
@@ -192,22 +245,29 @@ python-dateutil==2.9.0.post0
     # via
     #   matplotlib
     #   pandas
+python-dotenv==1.0.1
+    # via pydantic-settings
 pytz==2024.2
     # via pandas
 pyyaml==6.0.2
     # via
     #   huggingface-hub
     #   langchain
+    #   langchain-community
     #   langchain-core
     #   transformers
 regex==2024.9.11
-    # via transformers
+    # via
+    #   tiktoken
+    #   transformers
 requests==2.32.3
     # via
     #   huggingface-hub
     #   langchain
+    #   langchain-community
     #   langsmith
     #   requests-toolbelt
+    #   tiktoken
     #   transformers
 requests-toolbelt==1.0.0
     # via langsmith
@@ -225,18 +285,30 @@ sniffio==1.3.1
     # via
     #   anyio
     #   httpx
+    #   openai
 sqlalchemy==2.0.35
-    # via langchain
+    # via
+    #   langchain
+    #   langchain-community
+sse-starlette==1.8.2
+    # via langserve
 stack-data==0.6.3
     # via ipython
+starlette==0.39.2
+    # via
+    #   fastapi
+    #   sse-starlette
 sympy==1.13.3
     # via torch
 tenacity==8.5.0
     # via
     #   langchain
+    #   langchain-community
     #   langchain-core
 threadpoolctl==3.5.0
     # via scikit-learn
+tiktoken==0.8.0
+    # via langchain-openai
 tokenizers==0.20.0
     # via
     #   -r requirements.in
@@ -249,6 +321,7 @@ tqdm==4.66.5
     # via
     #   -r requirements.in
     #   huggingface-hub
+    #   openai
     #   transformers
 traitlets==5.14.3
     # via
@@ -258,16 +331,23 @@ transformers==4.45.2
     # via -r requirements.in
 typing-extensions==4.12.2
     # via
+    #   fastapi
     #   huggingface-hub
     #   langchain-core
+    #   openai
     #   pydantic
     #   pydantic-core
     #   sqlalchemy
     #   torch
+    #   typing-inspect
+typing-inspect==0.9.0
+    # via dataclasses-json
 tzdata==2024.2
     # via pandas
 urllib3==2.2.3
     # via requests
+uvicorn==0.31.1
+    # via sse-starlette
 wcwidth==0.2.13
     # via prompt-toolkit
 wheel==0.44.0
