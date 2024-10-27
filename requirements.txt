@@ -82,9 +82,12 @@ httpcore==1.0.6
     # via httpx
 httpx==0.27.2
     # via
+    #   langgraph-sdk
     #   langserve
     #   langsmith
     #   openai
+httpx-sse==0.4.0
+    # via langgraph-sdk
 huggingface-hub==0.25.1
     # via
     #   tokenizers
@@ -129,11 +132,19 @@ langchain-core==0.3.9
     #   langchain-community
     #   langchain-openai
     #   langchain-text-splitters
+    #   langgraph
+    #   langgraph-checkpoint
     #   langserve
 langchain-openai==0.2.2
     # via -r requirements.in
 langchain-text-splitters==0.3.0
     # via langchain
+langgraph==0.2.39
+    # via -r requirements.in
+langgraph-checkpoint==2.0.2
+    # via langgraph
+langgraph-sdk==0.1.34
+    # via langgraph
 langserve[all]==0.3.0
     # via -r requirements.in
 langsmith==0.1.132
@@ -155,6 +166,8 @@ mccabe==0.7.0
     #   pylint
 mpmath==1.3.0
     # via sympy
+msgpack==1.1.0
+    # via langgraph-checkpoint
 multidict==6.1.0
     # via
     #   aiohttp
@@ -180,6 +193,7 @@ openai==1.51.1
     #   langchain-openai
 orjson==3.10.7
     # via
+    #   langgraph-sdk
     #   langserve
     #   langsmith
 packaging==24.1
