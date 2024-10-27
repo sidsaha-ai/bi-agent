@@ -3,11 +3,11 @@ This script uses Langchain to extract numbers from a user message using
 LLM.
 """
 import argparse
-import os
 
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
+
 
 def main(user_message: str) -> None:
     """
