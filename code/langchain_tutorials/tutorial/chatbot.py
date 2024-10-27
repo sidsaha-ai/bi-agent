@@ -2,10 +2,11 @@
 This script implements a chatbot by following the Langchain tutorial.
 """
 
+from langchain_core.messages import AIMessage, HumanMessage
 from langchain_openai import ChatOpenAI
-from langchain_core.messages import HumanMessage, AIMessage
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import START, MessagesState, StateGraph
+
 
 class ChatApp:
     model: ChatOpenAI
