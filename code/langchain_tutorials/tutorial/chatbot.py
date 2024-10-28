@@ -3,6 +3,7 @@ This script implements a chatbot by following the Langchain tutorial.
 """
 
 from langchain_core.messages import HumanMessage
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import START, MessagesState, StateGraph
@@ -28,7 +29,12 @@ class ChatApp:
         """
         Calls the language model.
         """
-        response = self.model.invoke(state['messages'])
+        prompt = ChatPromptTemplate.from_messages([
+            ('system', 'You will talk like a pirate. Answer the questions to the best of your ability.'),
+            MessagesPlaceholder(variable_name='messages'),
+        ])
+        chain = prompt | self.model
+        response = chain.invoke(state['messages'])
         return {
             'messages': response,
         }
