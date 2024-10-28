@@ -31,10 +31,12 @@ class ChatApp:
         """
         prompt = ChatPromptTemplate.from_messages([
             ('system', 'You will talk like a pirate. Answer the questions to the best of your ability.'),
-            MessagesPlaceholder(variable_name='messages'),
+            MessagesPlaceholder(variable_name='chat_messages'),
         ])
         chain = prompt | self.model
-        response = chain.invoke(state['messages'])
+        response = chain.invoke({
+            'chat_messages': state['messages'],
+        })
         return {
             'messages': response,
         }
