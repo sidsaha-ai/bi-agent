@@ -66,6 +66,16 @@ class SentimentalChatApp:
         # make the app
         self.app = self.workflow.compile()
     
+    def _call_model(self, system_prompt: str, user_prompt: str):
+        prompt = ChatPromptTemplate.from_messages([
+            ('system', '{system_prompt}'),
+            ('user', '{user_prompt}'),
+        ])
+        inputs = SentimentInput(system_prompt=system_prompt, user_prompt=user_prompt)
+        chain = prompt | self.model
+
+        return chain.invoke(inputs)
+    
     def find_sentiment(self, state: WorkflowState) -> dict:
         """
         Use the model to find the sentiment of the user's message.
@@ -94,28 +104,48 @@ class SentimentalChatApp:
         Below is the message you have to work on. Find the sentiment of the message to the best of your ability.
         {state['user_message']}
         '''
-        prompt = ChatPromptTemplate.from_messages([
-            ('system', '{system_prompt}'),
-            ('user', '{user_prompt}'),
-        ])
 
-        chain = prompt | self.model
-
-        sentinment_input = SentimentInput(system_prompt=system_prompt, user_prompt=user_prompt)
-        response = chain.invoke(sentinment_input)
-
+        response = self._call_model(system_prompt, user_prompt)
         return {
             'sentiment': response.content,
         }
     
     def comfort(self, state: WorkflowState) -> None:
-        print('I will comfort you')
+        system_prompt: str = """
+        Based on the user's input message, comfort the user appropriately as the sentiment of the message is negative.
+        """
+        user_prompt: str = f"""
+        Below is the user's input message. Comfort the user appropriately.
+        {state['user_message']}
+        """
+
+        response = self._call_model(system_prompt, user_prompt)
+        print(response.content)
     
     def joke(self, state: WorkflowState) -> None:
-        print('I will give you a joke!')
+        system_prompt: str = """
+        Based on the user's input message, tell the user an appropriate joke related to the user's message. To
+        make it fun, tell the joke like a pirate!
+        """
+        user_prompt: str = f"""
+        Below is the user's input message.
+        {state['user_message']}
+        """
+
+        response = self._call_model(system_prompt, user_prompt)
+        print(response.content)
     
     def encourage(self, state: WorkflowState) -> None:
-        print('I will encourage you!')
+        system_prompt: str = """
+        Based on the user's input message, encourage the user to continue to do well in whatever they are doing.
+        """
+        user_prompt: str = f"""
+        Below is the user's input message.
+        {state['user_message']}
+        """
+
+        response = self._call_model(system_prompt, user_prompt)
+        print(response.content)
     
     def run(self) -> None:
         """
