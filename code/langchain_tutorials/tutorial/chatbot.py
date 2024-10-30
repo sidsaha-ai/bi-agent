@@ -4,7 +4,8 @@ This script implements a chatbot by following the Langchain tutorial.
 
 from typing import Sequence
 
-from langchain_core.messages import BaseMessage, HumanMessage, trim_messages
+from langchain_core.messages import (AIMessage, BaseMessage, HumanMessage,
+                                     trim_messages)
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables.base import RunnableLambda
 from langchain_openai import ChatOpenAI
@@ -92,10 +93,14 @@ class ChatApp:
                 break
 
             input_messages = [HumanMessage(user_message)]
-
             state = State(chat_messages=input_messages, language=language)
-            output = self.app.invoke(state, config)
-            print(f'AI Response: {output["chat_messages"][-1].content}')
+
+            # stream the messages
+            print('AI Response:')
+            for chunk, _ in self.app.stream(state, config, stream_mode='messages'):
+                if isinstance(chunk, AIMessage):
+                    print(chunk.content, end='', flush=True)
+            print()
 
 
 def main() -> None:
