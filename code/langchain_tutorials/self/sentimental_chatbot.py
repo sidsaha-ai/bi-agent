@@ -3,12 +3,12 @@ This scripts implements a chatbot that uses an LLM to gauge the sentiment of the
 repsonsds accordinly.
 """
 
-from langchain_openai import ChatOpenAI
-from langchain_core.prompts import ChatPromptTemplate
-from langgraph.graph import START, StateGraph, END
-
-from typing_extensions import TypedDict, NotRequired
 from langchain_core.messages import AIMessage
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_openai import ChatOpenAI
+from langgraph.graph import END, START, StateGraph
+from typing_extensions import NotRequired, TypedDict
+
 
 class SentimentInput(TypedDict):
     system_prompt: str
