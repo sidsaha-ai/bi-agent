@@ -8,6 +8,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langgraph.graph import START, StateGraph, END
 
 from typing_extensions import TypedDict, NotRequired
+from langchain_core.messages import AIMessage
 
 class SentimentInput(TypedDict):
     system_prompt: str
@@ -119,8 +120,7 @@ class SentimentalChatApp:
         {state['user_message']}
         """
 
-        response = self._call_model(system_prompt, user_prompt)
-        print(response.content)
+        self._call_model(system_prompt, user_prompt)
     
     def joke(self, state: WorkflowState) -> None:
         system_prompt: str = """
@@ -132,8 +132,7 @@ class SentimentalChatApp:
         {state['user_message']}
         """
 
-        response = self._call_model(system_prompt, user_prompt)
-        print(response.content)
+        self._call_model(system_prompt, user_prompt)
     
     def encourage(self, state: WorkflowState) -> None:
         system_prompt: str = """
@@ -144,8 +143,7 @@ class SentimentalChatApp:
         {state['user_message']}
         """
 
-        response = self._call_model(system_prompt, user_prompt)
-        print(response.content)
+        self._call_model(system_prompt, user_prompt)
     
     def run(self) -> None:
         """
@@ -155,7 +153,10 @@ class SentimentalChatApp:
         user_message = user_message.strip()
 
         state: WorkflowState = WorkflowState(user_message=user_message)
-        response = self.app.invoke(state)
+        
+        for chunk, metadata in self.app.stream(state, stream_mode='messages'):
+            if isinstance(chunk, AIMessage) and metadata.get('langgraph_node') in ['comfort', 'joke', 'encourage']:
+                print(chunk.content, end='', flush=True)
 
 
 if __name__ == '__main__':
