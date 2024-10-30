@@ -4,8 +4,9 @@ This script implements a chatbot by following the Langchain tutorial.
 
 from typing import Sequence
 
-from langchain_core.messages import BaseMessage, HumanMessage
+from langchain_core.messages import BaseMessage, HumanMessage, trim_messages
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.runnables.base import RunnableLambda
 from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import START, StateGraph, add_messages
@@ -27,6 +28,7 @@ class ChatApp:
     model: ChatOpenAI
     workflow: StateGraph
     memory: MemorySaver
+    trimmer: RunnableLambda
     app: any
 
     def _init_model(self):
@@ -45,6 +47,10 @@ class ChatApp:
             MessagesPlaceholder(variable_name='chat_messages'),
         ])
         chain = prompt | self.model
+
+        # trim the messages
+        state['chat_messages'] = self.trimmer.invoke(state['chat_messages'])
+
         response = chain.invoke(state)
         return {
             'chat_messages': response,
@@ -55,6 +61,11 @@ class ChatApp:
         self._init_model()
         # make memory
         self.memory = MemorySaver()
+        # trimmer to manage context length
+        self.trimmer = trim_messages(  # pylint: disable=no-value-for-parameter
+            max_tokens=1000, strategy='last', token_counter=self.model, include_system=True,
+            allow_partial=False, start_on='human',
+        )
 
         # define the workflow
         self.workflow = StateGraph(state_schema=State)
