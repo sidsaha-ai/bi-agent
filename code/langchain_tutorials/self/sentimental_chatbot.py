@@ -11,11 +11,17 @@ from typing_extensions import NotRequired, TypedDict
 
 
 class SentimentInput(TypedDict):
+    """
+    The input to the model.
+    """
     system_prompt: str
     user_prompt: str
 
 
 class WorkflowState(TypedDict):
+    """
+    The state that the workflow maintains.
+    """
     user_message: str
     sentiment: NotRequired[str]
 
@@ -34,7 +40,7 @@ class SentimentalChatApp:
         api_key: str = 'lm_studio'
 
         self.model = ChatOpenAI(temperature=0.0, base_url=base_url, api_key=api_key)
-    
+
     def _init_workflow(self) -> None:
         self.workflow = StateGraph(state_schema=WorkflowState)
 
@@ -58,7 +64,7 @@ class SentimentalChatApp:
         self.workflow.add_edge('comfort', END)
         self.workflow.add_edge('joke', END)
         self.workflow.add_edge('encourage', END)
-    
+
     def __init__(self) -> None:
         # make the model
         self._init_model()
@@ -66,7 +72,7 @@ class SentimentalChatApp:
 
         # make the app
         self.app = self.workflow.compile()
-    
+
     def _call_model(self, system_prompt: str, user_prompt: str):
         prompt = ChatPromptTemplate.from_messages([
             ('system', '{system_prompt}'),
@@ -76,7 +82,7 @@ class SentimentalChatApp:
         chain = prompt | self.model
 
         return chain.invoke(inputs)
-    
+
     def find_sentiment(self, state: WorkflowState) -> dict:
         """
         Use the model to find the sentiment of the user's message.
@@ -84,7 +90,7 @@ class SentimentalChatApp:
         system_prompt: str = """
         You will be given a message and you have to gauge the sentiment of the message. If the sentiment is
         positive, output "positive", if the sentiment is negative, output "negative", and if the sentiment is
-        neutral, output "neutral". Below are a few examples - 
+        neutral, output "neutral". Below are a few examples -
 
         # Example 1
         Message: The day is so bright and sunny. I feel it very invigorating.
@@ -110,8 +116,11 @@ class SentimentalChatApp:
         return {
             'sentiment': response.content,
         }
-    
+
     def comfort(self, state: WorkflowState) -> None:
+        """
+        Uses the LLM to generate a comforting message.
+        """
         system_prompt: str = """
         Based on the user's input message, comfort the user appropriately as the sentiment of the message is negative.
         """
@@ -121,8 +130,11 @@ class SentimentalChatApp:
         """
 
         self._call_model(system_prompt, user_prompt)
-    
+
     def joke(self, state: WorkflowState) -> None:
+        """
+        Uses the LLM to generate a joke!
+        """
         system_prompt: str = """
         Based on the user's input message, tell the user an appropriate joke related to the user's message. To
         make it fun, tell the joke like a pirate!
@@ -133,8 +145,11 @@ class SentimentalChatApp:
         """
 
         self._call_model(system_prompt, user_prompt)
-    
+
     def encourage(self, state: WorkflowState) -> None:
+        """
+        Uses the LLM to generate an encoraging message.
+        """
         system_prompt: str = """
         Based on the user's input message, encourage the user to continue to do well in whatever they are doing.
         """
@@ -144,7 +159,7 @@ class SentimentalChatApp:
         """
 
         self._call_model(system_prompt, user_prompt)
-    
+
     def run(self) -> None:
         """
         Method to run the chat app.
@@ -153,7 +168,7 @@ class SentimentalChatApp:
         user_message = user_message.strip()
 
         state: WorkflowState = WorkflowState(user_message=user_message)
-        
+
         for chunk, metadata in self.app.stream(state, stream_mode='messages'):
             if isinstance(chunk, AIMessage) and metadata.get('langgraph_node') in ['comfort', 'joke', 'encourage']:
                 print(chunk.content, end='', flush=True)
