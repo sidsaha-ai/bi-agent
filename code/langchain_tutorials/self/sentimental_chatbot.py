@@ -5,7 +5,7 @@ repsonsds accordinly.
 
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
-from langgraph.graph import START, StateGraph
+from langgraph.graph import START, StateGraph, END
 
 from typing_extensions import TypedDict, NotRequired
 
@@ -34,19 +34,39 @@ class SentimentalChatApp:
 
         self.model = ChatOpenAI(temperature=0.0, base_url=base_url, api_key=api_key)
     
+    def _init_workflow(self) -> None:
+        self.workflow = StateGraph(state_schema=WorkflowState)
+
+        self.workflow.add_node('find_sentiment', self.find_sentiment)
+        self.workflow.add_edge(START, 'find_sentiment')
+
+        self.workflow.add_node('comfort', self.comfort)
+        self.workflow.add_node('joke', self.joke)
+        self.workflow.add_node('encourage', self.encourage)
+
+        self.workflow.add_conditional_edges(
+            'find_sentiment',
+            lambda state: state['sentiment'],
+            {
+                'positive': 'encourage',
+                'neutral': 'joke',
+                'negative': 'comfort',
+            },
+        )
+
+        self.workflow.add_edge('comfort', END)
+        self.workflow.add_edge('joke', END)
+        self.workflow.add_edge('encourage', END)
+    
     def __init__(self) -> None:
         # make the model
         self._init_model()
-
-        # make the workflow
-        self.workflow = StateGraph(state_schema=WorkflowState)
-        self.workflow.add_edge(START, 'find_sentiment')
-        self.workflow.add_node('find_sentiment', self.find_sentiment)
+        self._init_workflow()
 
         # make the app
         self.app = self.workflow.compile()
     
-    def find_sentiment(self, state: WorkflowState) -> str:
+    def find_sentiment(self, state: WorkflowState) -> dict:
         """
         Use the model to find the sentiment of the user's message.
         """
@@ -84,8 +104,18 @@ class SentimentalChatApp:
         sentinment_input = SentimentInput(system_prompt=system_prompt, user_prompt=user_prompt)
         response = chain.invoke(sentinment_input)
 
-        print(response.content)
-        state['sentiment'] = response.content
+        return {
+            'sentiment': response.content,
+        }
+    
+    def comfort(self, state: WorkflowState) -> None:
+        print('I will comfort you')
+    
+    def joke(self, state: WorkflowState) -> None:
+        print('I will give you a joke!')
+    
+    def encourage(self, state: WorkflowState) -> None:
+        print('I will encourage you!')
     
     def run(self) -> None:
         """
@@ -96,7 +126,6 @@ class SentimentalChatApp:
 
         state: WorkflowState = WorkflowState(user_message=user_message)
         response = self.app.invoke(state)
-        print(response)
 
 
 if __name__ == '__main__':
